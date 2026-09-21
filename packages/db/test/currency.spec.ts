@@ -60,9 +60,13 @@ describe("normalizeCurrency and isCurrencyCode", () => {
 			expect(normalizeCurrency(input)).toBe("USD");
 			expect(isCurrencyCode(input)).toBe(true);
 		}
+		for (const input of [" clp ", "Clp", "CLP"]) {
+			expect(normalizeCurrency(input)).toBe("CLP");
+			expect(isCurrencyCode(input)).toBe(true);
+		}
 	});
 
-	it("offers only the eleven currencies most of the world trades in", () => {
+	it("lists exactly the currencies it accepts", () => {
 		expect(CURRENCIES.map((entry) => entry.code)).toEqual([
 			"USD",
 			"EUR",
@@ -75,6 +79,7 @@ describe("normalizeCurrency and isCurrencyCode", () => {
 			"HKD",
 			"SGD",
 			"ZAR",
+			"CLP",
 		]);
 	});
 
@@ -101,6 +106,7 @@ describe("normalizeCurrency and isCurrencyCode", () => {
 describe("minorUnitsOf", () => {
 	it("knows the currencies that are not two-decimal", () => {
 		expect(minorUnitsOf("JPY")).toBe(0);
+		expect(minorUnitsOf("CLP")).toBe(0);
 	});
 
 	it("assumes two for anything else, so an amount still round-trips", () => {
